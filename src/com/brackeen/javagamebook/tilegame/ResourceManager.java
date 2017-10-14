@@ -30,6 +30,9 @@ public class ResourceManager {
     private Sprite goalSprite;
     private Sprite warpSprite;
     private Sprite healthSprite;
+    private Sprite fastSprite;
+    private Sprite invincibleSprite;
+    private Sprite slowEnemySprite;
     
     private Sprite[] enemySprites;
     private ScriptManager s;
@@ -93,8 +96,7 @@ public class ResourceManager {
     	}
         return getScaledImage(image, 1, -1);
     }
-
-
+    
     private Image getScaledImage(Image image, float x, float y) {
 
     	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
@@ -253,9 +255,13 @@ public class ResourceManager {
 
                 // check if the char represents tile A, B, C etc.
                 int tile = ch - 'A';
+                int fireTile = ch - 'B';
                 if (tile >= 0 && tile < tiles.size()) {
                     newMap.setTile(x, y, (Image)tiles.get(tile));
                 }
+                /*if (tile >= 0 && tile < tiles.size()) {
+                    newMap.setTile(x, y, (Image)tiles.get(fireTile));
+                }*/
 
                 // check if the char represents a sprite
                 else if (ch == 'o') {
@@ -269,6 +275,15 @@ public class ResourceManager {
                 }
                 else if (ch == '^') {
                     addSprite(newMap, healthSprite, x, y);
+                }
+                else if (ch == '@'){
+                	addSprite(newMap, fastSprite, x, y);
+                }
+                else if(ch == '+'){
+                	addSprite(newMap, invincibleSprite, x, y);
+                }
+                else if(ch == '$'){
+                	addSprite(newMap, slowEnemySprite, x, y);
                 }
                 else if ((ch>='0')&&(ch<='9')){
                 	((PowerUp.Warp)warpSprite).setWarpValue((ch-'0')+2+currentMap);
@@ -328,6 +343,7 @@ public class ResourceManager {
             map.addSprite(sprite);
         }
     }
+
 
 
     // -----------------------------------------------------------
@@ -454,6 +470,47 @@ public class ResourceManager {
                         	if(s.getArchType(x).compareTo("lobster")==0)
                         		enemyAnim[x][i]=createMonkeyAnim(
                         				images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
+                            else
+                            	if(s.getArchType(x).compareTo("fireball")==0)
+                            		enemyAnim[x][i]=createFlyAnim(
+                            				images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
+                            	else
+                                	if(s.getArchType(x).compareTo("pugBoss")==0)
+                                		enemyAnim[x][i]=createBossAnim(
+                                				images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
+                                    else
+                                    	if(s.getArchType(x).compareTo("Plane")==0)
+                                    		enemyAnim[x][i]=createFlyAnim(
+                                    				images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
+                                    	else
+                                        	if(s.getArchType(x).compareTo("Frog")==0)
+                                        		enemyAnim[x][i]=createMonkeyAnim(
+                                        				images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
+          else
+        	if(s.getArchType(x).compareTo("Turtle")==0)
+                enemyAnim[x][i] = createGrubAnim(
+                        images[i][imageIndex++], images[i][imageIndex++]);
+        	else
+            if(s.getArchType(x).compareTo("spider")==0)
+                enemyAnim[x][i] = createGrubAnim(
+                        images[i][imageIndex++], images[i][imageIndex++]);
+            else
+        	if(s.getArchType(x).compareTo("kangaroo")==0)
+        		enemyAnim[x][i]=createMonkeyAnim(
+        				images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
+        	else
+                if(s.getArchType(x).compareTo("Mushroom")==0)
+                    enemyAnim[x][i] = createGrubAnim(
+                            images[i][imageIndex++], images[i][imageIndex++]);
+                else
+            if(s.getArchType(x).compareTo("KoolAidGuy")==0)
+                enemyAnim[x][i] = createGrubAnim(
+                        images[i][imageIndex++], images[i][imageIndex++]);
+            else
+        	if(s.getArchType(x).compareTo("Wasp")==0)
+        		enemyAnim[x][i]=createFlyAnim(
+        				images[i][imageIndex++], images[i][imageIndex++], images[i][imageIndex++]);
+            
                 				
         }
 
@@ -513,9 +570,53 @@ public class ResourceManager {
                   if(s.getArchType(x).compareTo("lobster")==0)
                      enemySprites[x]=new Lobster(enemyAnim[x][0], enemyAnim[x][1],
                     		 	enemyAnim[x][2], enemyAnim[x][3]);
+                  else
+                      if(s.getArchType(x).compareTo("fireball")==0)
+                         enemySprites[x]=new Fireball(enemyAnim[x][0], enemyAnim[x][1],
+                        		 	enemyAnim[x][2], enemyAnim[x][3]);
+                      else
+                          if(s.getArchType(x).compareTo("pugBoss")==0)
+                             enemySprites[x]=new pugBoss(enemyAnim[x][0], enemyAnim[x][1],
+                            		 	enemyAnim[x][2], enemyAnim[x][3]);
+                          else
+                              if(s.getArchType(x).compareTo("Plane")==0)
+                                 enemySprites[x]=new Plane(enemyAnim[x][0], enemyAnim[x][1],
+                                		 	enemyAnim[x][2], enemyAnim[x][3]);
+                              else
+                                  if(s.getArchType(x).compareTo("Frog")==0)
+                                     enemySprites[x]=new Frog(enemyAnim[x][0], enemyAnim[x][1],
+                                    		 	enemyAnim[x][2], enemyAnim[x][3]);
+                                  else
+                                      if(s.getArchType(x).compareTo("Turtle")==0)
+                                         enemySprites[x]=new Turtle(enemyAnim[x][0], enemyAnim[x][1],
+                                        		 	enemyAnim[x][2], enemyAnim[x][3]);
+        else
+        if(s.getArchType(x).compareTo("spider")==0)
+            enemySprites[x]=new spider(enemyAnim[x][0], enemyAnim[x][1],
+           		 	enemyAnim[x][2], enemyAnim[x][3]);
+        else
+        if(s.getArchType(x).compareTo("kangaroo")==0)
+            enemySprites[x]=new kangaroo(enemyAnim[x][0], enemyAnim[x][1],
+           		 	enemyAnim[x][2], enemyAnim[x][3]);
+        else
+        if(s.getArchType(x).compareTo("Mushroom")==0)
+            enemySprites[x]=new Mushroom(enemyAnim[x][0], enemyAnim[x][1],
+           		 	enemyAnim[x][2], enemyAnim[x][3]);
+        else
+        if(s.getArchType(x).compareTo("KoolAidGuy")==0)
+            enemySprites[x]=new KoolAidGuy(enemyAnim[x][0], enemyAnim[x][1],
+           		 	enemyAnim[x][2], enemyAnim[x][3]);
+        else
+        if(s.getArchType(x).compareTo("Wasp")==0)
+            enemySprites[x]=new Wasp(enemyAnim[x][0], enemyAnim[x][1],
+           		 	enemyAnim[x][2], enemyAnim[x][3]);
+
+        
+        
     }
     
-    public String levelBackground()
+
+public String levelBackground()
     {	//return the image name of the background for the current map
     	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
         	if(CodeReflection.getAbstactionLevel()>=0)
@@ -609,6 +710,18 @@ public class ResourceManager {
     	}
     	return(s.getSoundByReference("warp"));
     }
+    public String getInSong()
+    {	//return the sound for the note
+    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
+        	if(CodeReflection.getAbstactionLevel()>=0)
+        	{//check to make sure it's this level of abstraction
+        		e.fillInStackTrace();		
+        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
+        								e.getStackTrace()[0].getMethodName());
+        	}
+    	}
+    	return(s.getSoundByReference("invincible"));
+    }
     
     public String getEndOfLevelSound()
     {	//return the sound for the warp
@@ -660,6 +773,18 @@ public class ResourceManager {
         	}
     	}
     	return(s.getSoundByReference("hurt"));
+    }
+    public String getPowerUpSound()
+    {	//return the sound for receiving damage, but not dying
+    	if(CodeReflection.isTracing() && TilegamePackageTracingEnabled.getTilegamePackageTracingEnabledInstance().isEnabled()) {
+        	if(CodeReflection.getAbstactionLevel()>=0)
+        	{//check to make sure it's this level of abstraction
+        		e.fillInStackTrace();		
+        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
+        								e.getStackTrace()[0].getMethodName());
+        	}
+    	}
+    	return(s.getSoundByReference("powerUp"));
     }
     
     public ScriptManager getScriptClass()
@@ -829,6 +954,22 @@ public class ResourceManager {
         anim.addFrame(loadImage(s.getItemImage("health",3)),100);
         anim.addFrame(loadImage(s.getItemImage("health",4)),100);
         healthSprite = new PowerUp.Health(anim);
+        
+        //create Faster sprite
+        anim = new Animation();
+        anim.addFrame(loadImage(s.getItemImage("powerup", 1)), 100);
+        anim.addFrame(loadImage(s.getItemImage("powerup", 2)), 100);
+        anim.addFrame(loadImage(s.getItemImage("powerup", 3)), 100);
+        anim.addFrame(loadImage(s.getItemImage("powerup", 4)), 100);
+        fastSprite = new PowerUp.Faster(anim);
+        
+        //create Invincible Sprite
+        anim = new Animation();
+        anim.addFrame(loadImage(s.getItemImage("invincible", 1)), 20);
+        anim.addFrame(loadImage(s.getItemImage("invincible", 2)), 20);
+        anim.addFrame(loadImage(s.getItemImage("invincible", 3)), 20);
+        anim.addFrame(loadImage(s.getItemImage("invincible", 4)), 20);
+        invincibleSprite = new PowerUp.Invincible(anim);
         
     }
 	 public void setLevelMappingFile(String scriptFile)

@@ -4,7 +4,7 @@ import com.brackeen.javagamebook.graphics.Animation;
 import com.brackeen.javagamebook.codereflection.*;
 
 /**
-    A Fly is a Creature that fly slowly in the air.
+*   @author Juliette Albo
 */
 public class Plane extends Creature {
 
@@ -35,7 +35,7 @@ public class Plane extends Creature {
         								e.getStackTrace()[0].getMethodName());
         	}
     	}
-        return 0.5f * enemySpeedMultiplier;
+        return 0.7f * enemySpeedMultiplier;
     }
 
 

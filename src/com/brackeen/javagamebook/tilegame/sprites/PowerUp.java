@@ -5,7 +5,8 @@ import com.brackeen.javagamebook.graphics.*;
 import com.brackeen.javagamebook.codereflection.*;
 
 /**
-    A PowerUp class is a Sprite that the player can pick up.
+ @author Jacob Kahn
+ @author Brett Marcinkiewicz
 */
 public abstract class PowerUp extends Sprite {
 	
@@ -164,4 +165,46 @@ public abstract class PowerUp extends Sprite {
         	}
     	}
 	}
+    public static class Faster extends PowerUp{
+
+		public Faster(Animation anim) {
+			super(anim);
+			if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()){
+				if(CodeReflection.getAbstactionLevel()>=1)
+            	{//check to make sure it's this level of abstraction
+            		e.fillInStackTrace();		
+            		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
+            								e.getStackTrace()[0].getMethodName());
+            	}
+			}
+		}
+    	
+    }
+    public static class Invincible extends PowerUp{
+    	
+    	public Invincible(Animation anim) {
+			super(anim);
+			if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()){
+				if(CodeReflection.getAbstactionLevel()>=1)
+            	{//check to make sure it's this level of abstraction
+            		e.fillInStackTrace();		
+            		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
+            								e.getStackTrace()[0].getMethodName());
+            	}
+			}
+		}
+    }
+    public static class slowEnemy extends PowerUp{
+    	public slowEnemy(Animation anim) {
+			super(anim);
+			if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()){
+				if(CodeReflection.getAbstactionLevel()>=1)
+            	{//check to make sure it's this level of abstraction
+            		e.fillInStackTrace();		
+            		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
+            								e.getStackTrace()[0].getMethodName());
+            	}
+			}
+		}
+    }
 }

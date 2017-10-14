@@ -1,6 +1,24 @@
-F                                                            f                                     I
-HF                                                                                                 I
-AHF                                   EBBF       I   h             I      e  b   III               I
-AAHF                          EBBBBBBBGAAD                                  III                    I
-AAAHF              l         EGAAAAAAAAAAD               II           III             I          * I
-AAAAHBBBBBBBBBBBBBBBBBBBBBBBBGAAAAAAAAAAAHBBBBBBBBBB   II  II    III                      I   I  III
+# Map file for tile-based game
+# (Lines that start with '#' are comments)
+# The tiles are:
+#   (Space) Empty tile
+#   A..Z    Tiles A through Z
+#   o       Star
+#   !       Music Note
+#   *       Goal
+#   ^	    Health
+#   a       Bad Guy a (grub)
+#   b       Bad Guy b (fly)
+#   c       Bad Guy c (monkey)
+#   d	    Boss Guy                                      
+#   0       Warp
+                                                                                                               b
+                                                           o         g    g 
+                                                     o      o                                 oo                              ooooooooooo                          IIIIIIIIIIIIIIIIIIIIIIIIII   II    g
+                       o o o                    o I   o    I  o                             IIIIIII                          IIIIIIIIIIIII          g            II           o              o  II
+                      IIIIIII                    o     o                  f                                                          f                     I    II    IIIIIIIIIIIIIIIIIIIIIIIIIIII
+       e                  f           +           o                                                        IIII          I                              i       II    I *
+                                      EF          bEF                                  III                                                  IIIIIIIIIIIII       II    IIIIIIIIIIIIIIIIIIIIIIIIII 
+                 EF                  EGD          EGD                            IIII                III            IIIIIIII                I                     II                 
+  ^     EF       CD        a        EGAD  ^     pEGAD    p    i  i           III                                              IIIIIII       I             i q       IIIIIIIIIIIIIIIIIIIIIIIIIIIII   i
+BBBBBBBBGHBBBBBBBGHBBBBBBBBBBBBBBBBBGAAHBBBBBBBBBGAAHBBBBBBBBBBBBBBBBBBBBBBBBB                                                      BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB

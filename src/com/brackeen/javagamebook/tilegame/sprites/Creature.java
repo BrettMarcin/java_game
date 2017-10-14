@@ -41,6 +41,7 @@ public abstract class Creature extends Sprite {
     protected boolean intelligent = false;
     
     protected int health;
+    public boolean invincible = false;
     
     protected float horizontalResponceTime = 25.5f;
     protected float verticalResponceTime = 25.5f;
@@ -53,6 +54,8 @@ public abstract class Creature extends Sprite {
     }
     /**
         Creates a new Creature with the specified Animations.
+     * @param up 
+     * @param down 
     */
     public Creature(Animation left, Animation right,
         Animation deadLeft, Animation deadRight)
@@ -396,15 +399,17 @@ public boolean isIntelligent() {
 	
 	public void decrementHealth()
 	{
-    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
-        	if(CodeReflection.getAbstactionLevel()>=3)
-        	{//check to make sure it's this level of abstraction
-        		e.fillInStackTrace();		
-        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
-        								e.getStackTrace()[0].getMethodName());
-        	}
-    	}
-		health--;
+		if(invincible == false){
+	    	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
+	        	if(CodeReflection.getAbstactionLevel()>=3)
+	        	{//check to make sure it's this level of abstraction
+	        		e.fillInStackTrace();		
+	        		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
+	        								e.getStackTrace()[0].getMethodName());
+	        	}
+	    	}
+			health--;
+		}
 	}
 	
 	public void setHealth(int x)

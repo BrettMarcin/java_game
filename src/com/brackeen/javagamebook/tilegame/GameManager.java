@@ -19,6 +19,7 @@ import com.brackeen.javagamebook.codereflection.*;
 /**
     GameManager manages all parts of the game.
 */
+
 public class GameManager extends GameCore {
 	private boolean showFPS=true;
 	
@@ -69,15 +70,22 @@ public class GameManager extends GameCore {
     
     
     private static GameManager gameManager = new GameManager();
-    
+    Fireball fireball = new Fireball(null, null, null, null);
     // uncompressed, 44100Hz, 16-bit, mono, signed, little-endian
     private static final AudioFormat PLAYBACK_FORMAT =
         new AudioFormat(22050, 16, 1, true , false);
     
     private static final int DRUM_TRACK = 1;
     
+    private boolean hasSpeedPower = false;
+    private long speedTime;
+    private boolean hasInvinciblePower = false;
+    private long invincibleTime;
+    private boolean hasSlowPower = false;
+    private long slowTime;
+    
     private int START_HEALTH=3;		//health you start a level with
-    private int LEVEL_SWITCH_PAUSE=2100; //amount of time to wait between levels
+    private int LEVEL_SWITCH_PAUSE=3000; //amount of time to wait between levels
     private int MAX_HIT_CLOCK=2000;	//amount of invulnerability time after getting hit
     private int HEALTH_MAX=10;		//total amount of health a player can have
     private boolean MUSIC_ON = true; //by default, have the music on
@@ -105,6 +113,8 @@ public class GameManager extends GameCore {
     private Sound dieSound;
     private Sound healthSound;
     private Sound hurtSound;
+    private Sound inSong;
+    private Sound powerSong;
     
     private InputManager inputManager;
     private TileMapRenderer renderer;
@@ -154,6 +164,9 @@ public class GameManager extends GameCore {
             resourceManager.loadImage(resourceManager.levelBackground()));
         // load first map
         map = resourceManager.loadNextMap();
+        
+        //sets player speed
+        playerSpeedMultiplier = 1.0f;
 
         // load sounds
         soundManager = new SoundManager(PLAYBACK_FORMAT);
@@ -165,6 +178,8 @@ public class GameManager extends GameCore {
         dieSound = soundManager.getSound("sounds/"+resourceManager.getDieSound());
         healthSound = soundManager.getSound("sounds/"+resourceManager.getHealthSound());
         hurtSound = soundManager.getSound("sounds/"+resourceManager.getHurtSound());
+        inSong = soundManager.getSound("sounds/"+resourceManager.getInSong());
+        powerSong = soundManager.getSound("sounds/"+resourceManager.getPowerUpSound());
         
         // start music
         if(MUSIC_ON){
@@ -327,8 +342,9 @@ public class GameManager extends GameCore {
         		CodeReflection.registerMethod(e.getStackTrace()[0].getClassName(),
         								e.getStackTrace()[0].getMethodName());
         	}
-    	}
+    	}  	
     	playerSpeedMultiplier = speed;
+    	
     }
     
     public float getPlayerSpeedMultiplier()
@@ -606,6 +622,7 @@ public class GameManager extends GameCore {
 		scoreBoard.setMultiplier(this.baseScoreMultiplier);
 		scoreBoard.setScore(0);
 		totalElapsedTime = 0;
+		hasSpeedPower = false;
     }
 
 
@@ -822,13 +839,11 @@ public class GameManager extends GameCore {
         								e.getStackTrace()[0].getMethodName());
         	}
     	}
-    
         // run through the list of Sprites
         Iterator i = map.getSprites();
         boolean found = false;
         Sprite otherSprite=null;
        
-
         while (i.hasNext()&& !found) {
             otherSprite = (Sprite)i.next();
             
@@ -881,12 +896,23 @@ public class GameManager extends GameCore {
                 this.baseScoreMultiplier=1.0f;
         		scoreBoard.setMultiplier(this.baseScoreMultiplier);
         		
+        		
+        		
         		totalElapsedTime = 0;
         		
         		//reset Star total
         		scoreBoard.setStarTotal(0);
+        		//reset speed
+        		hasSpeedPower = false;
+        		playerSpeedMultiplier = 1.0f;
+        		//resets invincibility
+        		hasInvinciblePower = false;
+        		INVINCIBLE = false;
+        		
+        		
+        		
             	try{
-                	Thread.sleep(750);	
+                	Thread.sleep(900);	
                 }catch(Exception io){};
                 hitClock=0;
         }                    
@@ -929,6 +955,31 @@ public class GameManager extends GameCore {
             }
             // normal update
             sprite.update(elapsedTime);
+        }
+        
+        if(hasSpeedPower == true){
+    		if(totalElapsedTime<(speedTime+7000)){
+    			playerSpeedMultiplier = 2.0f;
+    			midiPlayer.stop();
+    		}
+    		else{
+            	playerSpeedMultiplier = 1.0f;
+            	hasSpeedPower = false;
+            	midiPlayer.play(sequence, true);
+            }
+    	}
+        if(hasInvinciblePower == true){
+        	if(totalElapsedTime<(invincibleTime+7000)){
+        		INVINCIBLE = true;
+        		midiPlayer.stop();
+        		
+        		
+        	}
+        	else{
+        		hasInvinciblePower = false;
+        		INVINCIBLE = false;
+        		midiPlayer.play(sequence, true);
+        	}
         }
     }
 
@@ -1078,8 +1129,48 @@ public class GameManager extends GameCore {
             acquirePowerUp((PowerUp)collisionSprite);
             collisionSprite=null;
         }
+        else if(collisionSprite instanceof Fireball){
+        	Creature badFireball = (Fireball)collisionSprite;
+        	if((hitClock==0)&&(!badFireball.isHelper())){
+        		if(!INVINCIBLE){	//If you're not invincible...
+	            	if(health==0)
+	            	{	//player has run out of health, he will die
+	            		// player dies!
+	            		midiPlayer.stop();
+	            		
+	            		if(SOUND_ON)
+	            			soundManager.play(dieSound);
+	            		player.setState(Creature.STATE_DYING);
+	                
+	            		//reset score multipliers
+	            		this.baseScoreMultiplier=1.0f;
+	            		scoreBoard.setMultiplier(this.baseScoreMultiplier);
+	            	
+	            		player.consecutiveHits=0;
+	            		totalElapsedTime = 0;
+	            		
+	            		//reset Star total
+	            		scoreBoard.setStarTotal(0);
+	            		
+	            		//reset speed
+	            		hasSpeedPower = false;
+	            		playerSpeedMultiplier = 1.0f;
+	            	}
+	            	else{ 
+	            			hitClock=MAX_HIT_CLOCK;
+	            			if(SOUND_ON)
+	            				soundManager.play(hurtSound);
+	            			health--;	//deduct from players health
+	            		}
+        		}
+        		else{
+        			
+        		}
+        		player.jump(true);
+        	}
+        }
         else if (collisionSprite instanceof Creature) {
-            Creature badguy = (Creature)collisionSprite;
+            Creature badguy = (Creature)collisionSprite; 
             if (canKill) {
                 // kill the badguy and make player bounce, and increase score
             	
@@ -1087,7 +1178,7 @@ public class GameManager extends GameCore {
             	if(badguy instanceof Boss){
             		execute=false;
             		((Boss)badguy).decrementHealth();
-            		if(((Boss)badguy).getHealth()==0) //beat the boss, move to next leve
+            		if(((Boss)badguy).getHealth()==0) //beat the boss, move to next level
             		{
             			this.baseScoreMultiplier++;
                 		player.consecutiveHits++;
@@ -1131,7 +1222,55 @@ public class GameManager extends GameCore {
                         midiPlayer.play(sequence, true);
                         }
                         execute=false;
-            		}else
+            		}else if(badguy instanceof Boss){
+                		execute=false;
+                		((Boss)badguy).decrementHealth();
+                		if(((Boss)badguy).getHealth()==0) //beat the boss, move to next level
+                		{
+                			this.baseScoreMultiplier++;
+                    		player.consecutiveHits++;
+                    		scoreBoard.setMultiplier((float) (10*player.consecutiveHits));
+                    		scoreBoard.addScore(10);
+                    		
+                			if(SOUND_ON)
+                				soundManager.play(boopSound);
+                    		badguy.setState(Creature.STATE_DYING);
+                    		player.setY(badguy.getY() - player.getHeight());
+                    		player.jump(true);
+                    		
+                        	midiPlayer.stop();	//temporarily stop music
+                        	
+                        	if(SOUND_ON)
+                        		soundManager.play(endOfLevelSound);
+                        	
+                            
+                            scoreBoard.drawLevelOver();	//draw  Level over banner
+                            
+                            draw(screen.getGraphics());
+                            screen.update();
+                			
+                            
+                            try{
+                            	Thread.sleep(LEVEL_SWITCH_PAUSE);	//give a little time before reloading the map
+                            						//needed to avoid a sound bug
+                            }catch(Exception io){};
+                			
+                            scoreBoard.stopLevelOver();	//take down level over banner
+                            
+                            
+                            totalElapsedTime=0;	//reset the clock
+                            map = resourceManager.loadNextMap();
+                            renderer.setBackground(resourceManager.loadImage(resourceManager.levelBackground()));
+                  
+                            //change music
+                            if(MUSIC_ON){
+                            sequence =
+                                midiPlayer.getSequence("sounds/"+resourceManager.levelMusic());
+                            midiPlayer.play(sequence, true);
+                            }
+                            execute=false;
+                		}
+            		else
             		{
             			if(SOUND_ON)
             				soundManager.play(boopSound);
@@ -1169,39 +1308,135 @@ public class GameManager extends GameCore {
         			player.jump(true);
             	}
             	execute=true;
-            }
+            }else if(badguy instanceof pugBoss){
+        		execute=false;
+        		((pugBoss)badguy).decrementHealth();
+        		if(((pugBoss)badguy).getHealth()==0) //beat the boss, move to next level
+        		{
+        			this.baseScoreMultiplier++;
+            		player.consecutiveHits++;
+            		scoreBoard.setMultiplier((float) (10*player.consecutiveHits));
+            		scoreBoard.addScore(10);
+            		
+        			if(SOUND_ON)
+        				soundManager.play(boopSound);
+            		badguy.setState(Creature.STATE_DYING);
+            		player.setY(badguy.getY() - player.getHeight());
+            		player.jump(true);
+            		
+                	midiPlayer.stop();	//temporarily stop music
+                	
+                	if(SOUND_ON)
+                		soundManager.play(endOfLevelSound);
+                	
+                    
+                    scoreBoard.drawLevelOver();	//draw  Level over banner
+                    
+                    draw(screen.getGraphics());
+                    screen.update();
+        			
+                    
+                    try{
+                    	Thread.sleep(LEVEL_SWITCH_PAUSE);	//give a little time before reloading the map
+                    						//needed to avoid a sound bug
+                    }catch(Exception io){};
+        			
+                    scoreBoard.stopLevelOver();	//take down level over banner
+                    
+                    
+                    totalElapsedTime=0;	//reset the clock
+                    map = resourceManager.loadNextMap();
+                    renderer.setBackground(resourceManager.loadImage(resourceManager.levelBackground()));
+          
+                    //change music
+                    if(MUSIC_ON){
+                    sequence =
+                        midiPlayer.getSequence("sounds/"+resourceManager.levelMusic());
+                    midiPlayer.play(sequence, true);
+                    }
+                    execute=false;
+        		}
+    		else
+    		{
+    			if(SOUND_ON)
+    				soundManager.play(boopSound);
+        		
+    	
+    			player.consecutiveHits++;
+        		scoreBoard.setMultiplier((float) (10*player.consecutiveHits));
+        		scoreBoard.addScore(10);
+        		
+    			player.setY(badguy.getY() - player.getHeight());
+    			badguy.setState(Creature.STATE_HURT);
+    			
+        		player.jump(true);
+    		}
+    	}
+    	
+    	if(execute)
+    	{	
+    		if(SOUND_ON)
+    			soundManager.play(boopSound);
+    		if(!badguy.isHelper()){//if it's a helper, don't do the following
+    			badguy.decrementHealth();
+    			if(badguy.getHealth()==0)
+    			{	//The Bad Guy is dead
+    				badguy.setState(Creature.STATE_DYING);
+    			}else
+        		{	//The Bad Guy is hurt, but still alive
+        			badguy.setState(Creature.STATE_HURT);
+        		}
+    			player.consecutiveHits++;
+    			scoreBoard.setMultiplier((float) (10*player.consecutiveHits));
+    			scoreBoard.addScore(10);
+    		}
+			player.setY(badguy.getY() - player.getHeight());
+			player.jump(true);
+    	}
+    	execute=true;
+    }
             else {
             	if((hitClock==0)&&(!badguy.isHelper())){
-            		if(!INVINCIBLE)	//If you're not invincible...
-	            	if(health==0)
-	            	{	//player has run out of health, he will die
-	            		// player dies!
-	            		midiPlayer.stop();
-	            		
-	            		if(SOUND_ON)
-	            			soundManager.play(dieSound);
-	            		player.setState(Creature.STATE_DYING);
-	                
-	            		//reset score multipliers
-	            		this.baseScoreMultiplier=1.0f;
-	            		scoreBoard.setMultiplier(this.baseScoreMultiplier);
-	            	
-	            		player.consecutiveHits=0;
-	            		totalElapsedTime = 0;
-	            		
-	            		//reset Star total
-	            		scoreBoard.setStarTotal(0);
-	            	}else 
-	            		{ 
-	            			hitClock=MAX_HIT_CLOCK;
-	            			if(SOUND_ON)
-	            				soundManager.play(hurtSound);
-	            			health--;	//deduct from players health
-	            		}
+            		if(!INVINCIBLE){	//If you're not invincible...
+		            	if(health==0)
+		            	{	//player has run out of health, he will die
+		            		// player dies!
+		            		midiPlayer.stop();
+		            		
+		            		if(SOUND_ON)
+		            			soundManager.play(dieSound);
+		            		player.setState(Creature.STATE_DYING);
+		                
+		            		//reset score multipliers
+		            		this.baseScoreMultiplier=1.0f;
+		            		scoreBoard.setMultiplier(this.baseScoreMultiplier);
+		            	
+		            		player.consecutiveHits=0;
+		            		totalElapsedTime = 0;
+		            		
+		            		//reset Star total
+		            		scoreBoard.setStarTotal(0);
+		            		
+		            		//reset speed
+		            		hasSpeedPower = false;
+		            		playerSpeedMultiplier = 1.0f;
+		            	}else 
+		            		{ 
+		            			hitClock=MAX_HIT_CLOCK;
+		            			if(SOUND_ON)
+		            				soundManager.play(hurtSound);
+		            			health--;	//deduct from players health
+		            		}
+            		}
+            		else{
+                		badguy.setState(Creature.STATE_DYING);
+                	}
             	}
+            	
             }
         }
     }
+    
 
 
     /**
@@ -1291,6 +1526,12 @@ public class GameManager extends GameCore {
                 midiPlayer.getSequence("sounds/"+resourceManager.levelMusic());
             midiPlayer.play(sequence, true);
             }
+            hasSpeedPower = false;
+            playerSpeedMultiplier = 1.0f;
+            
+            hasInvinciblePower = false;
+    		INVINCIBLE = false;
+            
             
         }
         else if (powerUp instanceof PowerUp.Warp) {
@@ -1328,6 +1569,19 @@ public class GameManager extends GameCore {
             midiPlayer.play(sequence, true);
             }
          
+        }
+        else if (powerUp instanceof PowerUp.Faster) {
+            // change the music
+        	if(SOUND_ON)
+        		soundManager.play(powerSong);
+        	hasSpeedPower = true;
+        	speedTime = totalElapsedTime;
+        	
+        }
+        else if (powerUp instanceof PowerUp.Invincible){
+        	hasInvinciblePower = true;
+        	invincibleTime = totalElapsedTime;
+        	soundManager.play(inSong);
         }
     }
 }

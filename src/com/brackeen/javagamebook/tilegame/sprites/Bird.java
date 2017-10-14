@@ -7,17 +7,10 @@ import java.util.Random;
 import com.brackeen.javagamebook.codereflection.*;
 
 /**
-    A Fly is a Creature that fly slowly in the air.
+*   @author Juliette Albo
 */
 public class Bird extends Creature {
 
-
-	/**
-	 * @param left
-	 * @param right
-	 * @param deadLeft
-	 * @param deadRight
-	 */
 	
 	protected long totalElapsedTime = 0;
 	protected long randomInterval = 100;
@@ -75,7 +68,7 @@ public class Bird extends Creature {
     }
 	
     public boolean isFlying() 
-    {//Override isFlying method to check to see if the fly is alive
+    {//Override isFlying method to check to see if the bird is alive
     	
     	//Code Tracing
     	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
@@ -124,7 +117,7 @@ public class Bird extends Creature {
 					setVelocityY(((random2.nextFloat()-0.5f)/1.3f)*enemySpeedMultiplier);
 				}
 				
-			//If the fly "flies" too high, send it in the other direction
+			//If the bird "flies" too high, send it in the other direction
 			if(getY()<-400)
 				setVelocityY(1.5f);
 		}

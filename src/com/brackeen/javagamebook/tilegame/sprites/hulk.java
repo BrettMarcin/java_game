@@ -6,8 +6,7 @@ import com.brackeen.javagamebook.util.*;
 import com.brackeen.javagamebook.codereflection.*;
 
 /**
- * @author danielsd
- * Daniels.Douglas@gmail.com
+ * @author Brett Marcinkiewicz
  */
 public class hulk extends Creature {
 
@@ -16,6 +15,7 @@ public class hulk extends Creature {
 	// have elapsed.
 	private long initJumpInterval = 2 * MILI_PER_SECOND; 
 	private long jumpInterval = initJumpInterval;
+	private float newSpeed = 0.2f;
 //    private Throwable e = new Throwable();
 	
 	/**
@@ -40,7 +40,7 @@ public class hulk extends Creature {
 		health = 2;
 	}
 	
-	//TODO Set how fast you want the monkey to move.
+	//TODO Set how fast you want the hulk to move.
     public float getMaxSpeed() {
     	if(CodeReflection.isTracing() && SpritesPackageTracingEnabled.getSpritesPackageTracingEnabledInstance().isEnabled()) {
         	if(CodeReflection.getAbstactionLevel()>=2)
@@ -50,7 +50,9 @@ public class hulk extends Creature {
         								e.getStackTrace()[0].getMethodName());
         	}
     	}
-        return 0.30f * enemySpeedMultiplier;
+    	
+    	
+        return newSpeed * enemySpeedMultiplier;
     }
     
 
@@ -72,11 +74,8 @@ public class hulk extends Creature {
         								e.getStackTrace()[0].getMethodName());
         	}
     	}
-		//See if its time for the monkey to jump
-		//Because time comes in at intervals we have to make sure that
-		//we jump in whichever elapsedTime interval that the timer has gone off in.
+    	
 		if((totalElapsedTime % jumpInterval)-elapsedTime<0){
-			//Make the monkey jump if he's not already in the air
 			jump();
 			jumpInterval = initJumpInterval + RandomUtil.getRandomInt(300);
 		}

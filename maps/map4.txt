@@ -12,11 +12,14 @@
 #   c       Bad Guy c (monkey)
 #   d	    Boss Guy 
 #   0       Warp
-                           II
-                           II
-                       cba  !                                                 o     o     
-                     IIIIIIIIIII^                a                                o           o
-         bb               o   aac   o o                        a                     o
-         EBBF           IIIIIIIII        o   o        o          b  b               bbbbbb             o
-     a   CAAD cccc       o    o         0    b  ^^   o   o    c c  a  c cc     cccc aa     aa o^       *
-EBBBBBBBBGAAHBBBBBBBBBBBBBBBBBBBBBBBBAAABBBBAABBBBBBBBBBBBB  IIII  IIII  EBBBBBBBBBBBBBBBBBBBBBBBBBBBBBF
+                               
+I                                                                                                                 III                                 IIIIIIIIIIIII               b              ^        IIIII                                  I
+I                                                                         @                             III                       IIII                                   IIII               I    IIIII                                           I
+I                                                          IIIII     IIIIIIIIIIIIIIIIIIIIIIIIII                           IIII           IIIIIIIIII                                IIIII                                                         I                                                                                                                                                                                                                                                   I
+I                                                  IIII                                                   t                                                                                                        I     I                       I
+I                                                                               ^                                                                                                                                 II     I                       I 
+I                                       IIIII                             IIIIIIIIIIIIIII                         III                                               II                                          IIII     I                       I             
+I                                     II                                                                         IIII                 III                  I        I                                          IIIII     I                       I
+I                                    III                                                                        IIIII           II                                  I                                         IIIIII     I                       I
+I                              k    IIII ^        IIII        I      a               a               a         IIIIII     i    III           I        q      p      I     I         ^    i        r          IIIIIII     I                  m    I 
+IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA           AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA           AAAAAAAAAAAAAAAAAAAAAAAA     AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA     AAAAAAAAAAAAAAAAAAAAAAAAI                                                                                                                                                                 

@@ -40,6 +40,9 @@ public class ScriptManager
     private String[] eolImages;
     private String[] warpImages;
     private String[] healthImages;
+    private String[] powerupImages;
+    private String[] invincibleImages;
+    private String[] slowEnemyImages;
     
     private int soundArrayLength;
     private Throwable e = new Throwable();
@@ -151,6 +154,9 @@ public class ScriptManager
 		warpImages = new String[4]; //init size 4 (4 frames of animation)
 		eolImages = new String[4]; //init size 4 (4 frames of animation)
 		healthImages = new String[4]; //init size 4 (4 frames of animation)
+		powerupImages = new String[4]; 
+		invincibleImages = new String[4];
+		slowEnemyImages = new String[4];
 				
 		while ((line=reader.readLine()) != null) 
 		{					
@@ -211,6 +217,41 @@ public class ScriptManager
 					healthImages[2]=line.substring(line.indexOf(">")+1,line.length());
 					while((line=reader.readLine()).charAt(0)=='#');//skip comments
 					healthImages[3]=line.substring(line.indexOf(">")+1,line.length());
+				}
+				else
+				if(line.compareTo("powerup")==0)
+				{
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					powerupImages[0]=line.substring(line.indexOf(">")+1,line.length());
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					powerupImages[1]=line.substring(line.indexOf(">")+1,line.length());
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					powerupImages[2]=line.substring(line.indexOf(">")+1,line.length());
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					powerupImages[3]=line.substring(line.indexOf(">")+1,line.length());
+				}
+				else
+				if(line.compareTo("invincible")==0)
+				{
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					invincibleImages[0]=line.substring(line.indexOf(">")+1,line.length());
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					invincibleImages[1]=line.substring(line.indexOf(">")+1,line.length());
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					invincibleImages[2]=line.substring(line.indexOf(">")+1,line.length());
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					invincibleImages[3]=line.substring(line.indexOf(">")+1,line.length());
+				}
+				else
+				if(line.compareTo("slowEnemy")== 0){
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					slowEnemyImages[0]=line.substring(line.indexOf(">")+1,line.length());
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					slowEnemyImages[1]=line.substring(line.indexOf(">")+1,line.length());
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					slowEnemyImages[2]=line.substring(line.indexOf(">")+1,line.length());
+					while((line=reader.readLine()).charAt(0)=='#');//skip comments
+					slowEnemyImages[3]=line.substring(line.indexOf(">")+1,line.length());
 				}
 			}
 		}
@@ -398,6 +439,12 @@ public class ScriptManager
 	 		return(eolImages[number-1]);
 	 	if(name.compareTo("health")==0)
 	 		return(healthImages[number-1]);
+	 	if(name.compareTo("powerup")==0)
+	 		return(powerupImages[number-1]);
+	 	if(name.compareTo("invincible")== 0)
+	 		return(invincibleImages[number-1]);
+	 	if(name.compareTo("slowEnemy")==0)
+	 		return(slowEnemyImages[number-1]);
 	 	return (null);
 	 }
 	 

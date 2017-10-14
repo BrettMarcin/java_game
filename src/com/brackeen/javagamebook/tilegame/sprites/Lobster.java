@@ -5,7 +5,9 @@ import com.brackeen.javagamebook.graphics.Animation;
 import com.brackeen.javagamebook.util.*;
 import com.brackeen.javagamebook.codereflection.*;
 
-
+/**
+ * @author Dennis Lam
+ */
 public class Lobster extends Creature {
 
 	private static final int MILI_PER_SECOND = 950; 

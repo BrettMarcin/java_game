@@ -5,14 +5,16 @@
 # each line has to have either a comment or an assignment; no blank space
 ####################################
 #Number of item sounds
-8
+10
 ####################################
 #sound assignments
-boop >boop2.wav
+boop >kill5.wav
 star >coin.wav
 note >note.wav
 warp >warp.wav
-endoflevel >eol.wav
-die >die.wav
-health >health.wav
+endoflevel >beat.wav
+die >die1.wav
+health >boy.wav
 hurt >hurt.wav
+invincible >inSong.wav
+powerUp >flash.wav

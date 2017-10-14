@@ -11,16 +11,13 @@
 #   b       Bad Guy b (fly)
 #   c       Bad Guy c (monkey)
 #   d	    Boss Guy 
-#   0       Warp
-                                                                 
-                           
-                           
-                           II
-                           II
-                           II
-                       cba                   c                                 o     o     
-                c    IIIIIIIIIII                 a        c                        o           o            b
-b         bb               o   aac   o o                        a                     o               c              b      
-         EBBF  c        IIIIIIIII        o   o        o          b  b                                        bb      c EF    aao
-        aCAAD cc       o    o              b       co   o     c  a     c     cccc aa     aa o        b                 CD     b *
-EBBBBBBBBGAAHBBBBBBBBBBBBBBBBBBBBBBBBF    III    III    III    EBBBBBBBBBBBBBBBBF  IIII  IIII  EBBBBBBBBBBBBBBBBBBBBBBBBF   EBBBB
+#   0       Warp           
+                                                                                  ooooooooooooooo                               oooooo    
+                                                                                                                           IIIIIIIIIIIIIII                        IIIIIIIIIIIIII
+                                                                     f                          f                                  ^                            IIII          IIIIIIIII
+             III                    ooooooo                g                   Ih                  I                   I                                     IIIII     f             IIIIIIIIII             j            
+             o^o        g         IIIIIIIIIIIII                       ^      ^                                   @                IIIII                   IIIIII  
+         III     III          I                  II               IIIIIIIIIIIII                         IIIIIIIIIIIIIIIIIII                            IIIII     ooooo    ooooo                               *
+                                     f                   g          ooooooooo                                                                       IIIII      f                              IIIIh          II
+              i          III           +     l                                    i        c                              p          s           IIIII ^             r         i            III           
+BBBBBBBBBBBBBBBBBBBBBBBBBBBB     BBBBBBBBBBBBBBBBB      BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBAAAAABBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB
